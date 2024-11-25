@@ -1,0 +1,27 @@
+---
+machine_architecture: amd64
+machine_distribution_codename: focal
+vm_instance_linux_distro: ubuntu
+docker_apt_repository_gpg_keys: "https://download.docker.com/linux/{{ vm_instance_linux_distro }}/gpg"
+docker_apt_repository: "https://download.docker.com/linux/{{ vm_instance_linux_distro }}"
+
+master_ip: "34.176.185.174"
+master_hostname: "k8s-master-node"
+
+slave_one_ip: "34.176.185.237"
+slave_one_hostname: "k8s-slave1-node"
+
+slave_two_ip: "10.194.0.5"
+slave_two_hostname: "k8s-slave2-node"
+
+cidr_range: "192.168.0.0/16"
+k8s_v: "1.30.7"
+
+calico_plugin-yaml_file: "https://raw.githubusercontent.com/projectcalico/calico/v3.25.1/manifests/calico.yaml"
+
+
+k8s_apt_repository_keys: "https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key"
+file_for_k8s_apt_repo_keys: "/etc/apt/keyrings/kubernetes-apt-keyring.gpg"
+k8s_apt_repository: "https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /"
+
+k8s_linux_user: "myawesomeprojectwideuser"

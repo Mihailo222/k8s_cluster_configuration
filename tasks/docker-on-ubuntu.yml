@@ -1,0 +1,60 @@
+---
+   - name: Update apt cache if needed.
+     apt:
+      update_cache: true
+      cache_valid_time: 3600
+
+   - name: Install ca-certificates and curl command.
+     apt:
+      name: "{{ item.value }}"
+      state: present
+
+     with_items:
+      - value: "ca-certificates"
+      - value: "curl"
+
+
+   - name: Make directory for GPG keys (they are used for package verification before installing with apt).
+     file:
+      path: /etc/apt/keyrings
+      state: directory
+      mode: 0755
+      recurse: yes
+
+
+   - name: Install Docker's apt repository GPG keys.
+     get_url:
+      url: "{{ docker_apt_repository_gpg_keys }}"
+      dest: /etc/apt/keyrings/docker.asc
+      force: yes #get_url module doesn't download file again if it exists on a server, but we want fresh software while installation process
+      validate_certs: yes #ensure SSL/TLS certs used by the server (in this case server serving GPG keys) is validated before downloading file
+
+
+   - name: Set the right premissions to the GPG keys file.
+     file:
+      path: /etc/apt/keyrings/docker.asc
+      mode: 0644
+
+   - name: Add Docker repository to APT sources
+     lineinfile:
+      path: /etc/apt/sources.list.d/docker.list
+      line: "deb [arch={{ machine_architecture }} signed-by=/etc/apt/keyrings/docker.asc] {{ docker_apt_repository }} {{ machine_distribution_codename }} stable"
+      create: yes
+      mode: 0644
+     become: true
+
+   - name: Update apt repository packet list in order to docker repositories be loaded.
+     apt:
+      update_cache: true
+
+
+   - name: Install Docker packages.
+     apt:
+      name: "{{ item.value }}"
+      state: present
+     with_items:
+      - value: "docker-ce"
+      - value: "docker-ce-cli"
+      - value: "containerd.io"
+      - value: "docker-buildx-plugin"
+      - value: "docker-compose-plugin"

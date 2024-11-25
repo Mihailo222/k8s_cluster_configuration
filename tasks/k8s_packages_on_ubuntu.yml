@@ -1,0 +1,41 @@
+---
+######################################## k8s INSTALLATION  #################################
+   - name: Add keys for k8s apt packages.
+     shell: curl -fsSL {{ k8s_apt_repository_keys }} | gpg --dearmor -o {{ file_for_k8s_apt_repo_keys }}
+     args:
+      creates: "{{ file_for_k8s_apt_repo_keys }}"
+
+   - name: Set the right premissions to google cloud gpg keys.
+     file:
+      path: "{{ file_for_k8s_apt_repo_keys }}"
+      mode: 0755
+
+   - name: Add K8S GC repository to APT sources
+     lineinfile:
+      path: /etc/apt/sources.list.d/kubernetes.list
+      line: "deb [signed-by={{ file_for_k8s_apt_repo_keys }}] {{ k8s_apt_repository }}"
+      create: yes #create file if it doesn't exist
+      mode: 0755 #must be readable !!
+
+   - name: Update apt packages list.
+     apt:
+       update_cache: yes
+
+   ########################################### INSTALL K8S PACKAGES  #################################
+
+   - name: Install kubelet, kubeadm, kubectl.
+     apt:
+      name: "{{ item.name }}"
+      state: present
+     with_items:
+      - name: "kubectl"
+      - name: "kubeadm"
+      - name: "kubelet"
+
+   - name: Update packages only if you request it.
+     shell: |
+      sudo apt-mark hold kubeadm kubectl kubelet
+
+   - name: Change kernel paramethers and configuration on runtime.
+     shell: |
+      sudo sysctl --system

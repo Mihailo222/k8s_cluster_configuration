@@ -1,0 +1,1 @@
+join_command: "kubeadm join 10.194.0.9:6443 --token bw1ynl.i69vqyd2y55edc1k --discovery-token-ca-cert-hash sha256:38b19e2439b6cdf89f371eb10e6aa1cc103fff20ddd11d3d4f804d0ad852e5c6"
