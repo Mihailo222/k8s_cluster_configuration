@@ -1,6 +1,0 @@
-- k8s slaves moraju da imaju pristup masteru i njegovom portu 6443
-- da bi ansible server mogao da pristupi k8s serveru, mora da ima u sebi .kube/config fajl da bi izvrsavao kubectl remotely
-- da znas sve portove za k8s i etcd
-- portov koji moraju biti otvoreni za sve: 6443,443,80 ali se opredeli za priv ili javne ip adrese, meni je automatski konfigurisao u kubeadm sa privatnom ip adresom  sudo kubeadm join 10.194.0.9:6443 --token bw1ynl.i69vqyd2y55edc1k --discovery-token-ca-cert-hash sha256:38b19e2439b6cdf89f371eb10e6aa1cc103fff20ddd11d3d4f804d0ad852e5c6, pa sam ja dopustio priv IP adresi servera da sme da pristupi svemu na portu 6443 !!!
-
-- kubectl se isprobava samo sa ctrl plane-a, ne sa nodova !!! To je poenta, da on ima svoj config fajl, a da nasi nodovi na koje idu kontejneri ne mogu pristupiti datom serveru preko kubwctl
