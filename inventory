@@ -11,5 +11,5 @@ master
 slave_one
 
 [machines:vars]
-ansible_ssh_private_key_user=myawesomeprojectwideuser
-ansible_ssh_private_key_file=~/gc_ssh/myawesomeprojectwideuser
+ansible_ssh_private_key_user=
+ansible_ssh_private_key_file=
